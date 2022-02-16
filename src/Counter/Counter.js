@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Auxiliary from '../hoc/Auxiliary'
+import Counter2 from '../Counter2/Counter2';
 
 export default class Counter extends Component {
     //локальный state
@@ -54,6 +55,14 @@ export default class Counter extends Component {
         return (
             <Auxiliary>
                 <h2>Counter (Лічильник) {this.state.counter} </h2>
+                
+                {/* Так делали раньше */}               
+                {/* <Counter2 clicked={this.props.clicked} /> */}
+
+                {/* так теперь работают со вложенными компонентами */}
+                {/* теперь тут не нужно передавать clicked, потому что мі его передаем напрямую из Арр.js */}
+                <Counter2 />
+               
                 <button onClick={this.addCounter}>+</button>
                 <button onClick={() => this.setState ({counter: this.state.counter - 1})}>-</button>
             </Auxiliary>

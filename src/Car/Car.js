@@ -2,6 +2,7 @@ import React from "react"
 // import Radium from "radium"
 // import './Car.css'
 import classes from "../Car/Car.module.css"
+import PropTypes, { number } from "prop-types"
 import withClass from "../hoc/withClass"
 
 //создаем реакт-компонент Car
@@ -40,6 +41,30 @@ class Car extends React.Component {
     // componentWillUnmount() {
     //     console.log('Компонент Car, етап життєвого циклу componentWillUnmount')    
     // }
+
+    //Cтарый способ задания и использования референций
+    // componentDidMount() {
+    //     //ставим фокус на 2-ой инпут 
+    //     if (this.props.index === 1) 
+    //     {
+    //         this.inputRef.focus()
+    //     }
+    // }
+
+    //новый способ задания референций
+    constructor(props) {
+        //метод super, чтобы всё работало, и чтобы он также отработал с методом конмтруктора
+        super(props)
+        this.inputRef = React.createRef()
+    }
+    componentDidMount() {
+        //ставим фокус на 2-ой инпут 
+        if (this.props.index === 1) 
+        {
+            this.inputRef.current.focus()
+        }
+    }
+
 
     render () {
         //console.log('Компонент Car, етап життєвого циклу Render')
@@ -134,6 +159,12 @@ class Car extends React.Component {
                 <h3>Car name (Назва автівки): {this.props.name} </h3>
                 <p> Year (Рік): <strong>{this.props.year}</strong></p>
                 <input 
+                    //Cтарый способ задания и использования референций
+                    // ref = {(inputRef) => this.inputRef = inputRef}
+                    
+                    //Новый способ задания и использования референций
+                    ref = {this.inputRef}
+
                     type = "text" 
                     onChange = {this.props.onChangeName} 
                     value = {this.props.name}
@@ -294,6 +325,16 @@ class Car extends React.Component {
 // export default Radium(Car) 
 
 // export default Car
+
+//Валідація
+Car.propTypes = {
+    // обязательное для нас поле на входе проверяем на наличие isRequired
+    name: PropTypes.string.isRequired,
+    year: PropTypes.number,
+    index: number,
+    onChangeName: PropTypes.func,
+    onDelete: PropTypes.func
+}
 
 // пример использoвания HOC withClass для обвeртки компонента Car
 export default withClass(Car, classes.Car)
